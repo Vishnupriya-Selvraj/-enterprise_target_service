@@ -1,0 +1,58 @@
+{
+  "alerting_rule_correction": {
+    "description": "Corrected alerting rule for orders-db (MongoDB). Replaces invalid SQL-specific checks with MongoDB-native metrics.",
+    "target_service": "orders-db",
+    "db_engine": "mongodb",
+    "invalid_rules_removed": [
+      "sql_row_lock_contention",
+      "pg_stat_activity_saturation",
+      "innodb_lock_waits"
+    ],
+    "corrected_rules": [
+      {
+        "rule_id": "mongodb_pool_saturation",
+        "description": "Alert if MongoDB connection pool is saturated (waiting for connections).",
+        "metric": "mongodb.pool.waitingForConnection",
+        "condition": "> 0",
+        "for": "2m",
+        "severity": "P1",
+        "labels": {
+          "db.engine": "mongodb",
+          "service": "orders-db"
+        }
+      },
+      {
+        "rule_id": "mongodb_pool_size_high",
+        "description": "Alert if current pool size exceeds 80% of maxPoolSize.",
+        "metric": "mongodb.pool.currentSize",
+        "condition": "> (mongodb.pool.maxPoolSize * 0.8)",
+        "for": "5m",
+        "severity": "P2",
+        "labels": {
+          "db.engine": "mongodb",
+          "service": "orders-db"
+        }
+      },
+      {
+        "rule_id": "mongodb_query_plan_collscan",
+        "description": "Alert on full collection scans for large collections (potential performance issue).",
+        "metric": "mongodb.query.planStage",
+        "condition": "== 'COLLSCAN' AND mongodb.collection.size > 1000000",
+        "for": "1m",
+        "severity": "P2",
+        "labels": {
+          "db.engine": "mongodb",
+          "service": "orders-db"
+        }
+      }
+    ],
+    "telemetry_tags_verification": {
+      "required_tags": [
+        "db.engine=mongodb",
+        "service=orders-db",
+        "instance=localhost:27017"
+      ],
+      "action": "Ensure OpenTelemetry exporters and Prometheus/Grafana dashboards are correctly tagged."
+    }
+  }
+}
