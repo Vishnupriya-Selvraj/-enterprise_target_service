@@ -1,0 +1,7 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "devsecops_swarm": "./src/graph/workflow.py:graph"
+  },
+  "env": ".env"
+}

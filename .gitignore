@@ -1,0 +1,17 @@
+# Secrets and Environment
+.env
+.env.local
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# LangGraph Local API Database
+.langgraph_api/
+*.pckl
+
+# OS / Virtual Environment
+.venv/
+venv/
+.DS_Store
