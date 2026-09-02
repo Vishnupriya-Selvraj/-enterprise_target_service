@@ -1,18 +1,30 @@
 // ==========================================================================
-// ENTERPRISE AI WORKBENCH - INDUSTRY-GRADE MULTI-AGENT FRONTEND ENGINE
+// ENTERPRISE AI WORKBENCH - ADVANCED MULTI-AGENT FRONTEND ENGINE v3.0
 // ==========================================================================
 
 const NODE_DISPLAY_MAP = {
-    "sre_commander": { label: "1. SRE Commander", icon: "🎯", desc: "Supervisory Triage & Stream Dispatch" },
-    "telemetry_analyst": { label: "2. Telemetry Analyst", icon: "📡", desc: "OpenTelemetry Spans & MongoDB Explain Plan" },
-    "runbook_rag": { label: "3. Runbook RAG", icon: "📚", desc: "SRE Knowledge Base SOP Retrieval" },
-    "diagnostic_fusion": { label: "4. Diagnostic Fusion", icon: "🧩", desc: "Cross-Stream RCA Convergence" },
-    "patch_engineer": { label: "5. Patch Engineer", icon: "💻", desc: "Remediation Patch & Reflection Engine" },
-    "sandbox_qa": { label: "6. Sandboxed QA", icon: "🧪", desc: "Live PyUnit Test Runner (localhost:27017)" },
-    "security_sast": { label: "7. Security SAST", icon: "🛡️", desc: "DevSecOps CWE & NoSQL Injection Auditor" },
-    "human_cab_gate": { label: "8. CAB Gate", icon: "👤", desc: "Cryptographic Governance Authorization" },
-    "deployment_and_postmortem": { label: "9. Git PR Release", icon: "🚀", desc: "Live GitHub Push & PR Deployment" }
+    "sre_commander": { step: 1, label: "1. SRE Incident Commander", icon: "🎯", desc: "Supervisory Triage & Stream Dispatch" },
+    "telemetry_analyst": { step: 2, label: "2. Telemetry & Log Analyst", icon: "📡", desc: "OpenTelemetry Spans & MongoDB Explain Plan" },
+    "runbook_rag": { step: 3, label: "3. Runbook RAG Agent", icon: "📚", desc: "SRE Knowledge Base SOP Retrieval" },
+    "diagnostic_fusion": { step: 4, label: "4. Diagnostic Fusion Engine", icon: "🧩", desc: "Cross-Stream RCA Convergence" },
+    "patch_engineer": { step: 5, label: "5. Principal Patch Engineer", icon: "💻", desc: "Remediation Patch & Reflection Engine" },
+    "sandbox_qa": { step: 6, label: "6. Sandboxed QA Runner", icon: "🧪", desc: "Live PyUnit Test Runner (localhost:27017)" },
+    "security_sast": { step: 7, label: "7. DevSecOps SAST Auditor", icon: "🛡️", desc: "CWE-89 & NoSQL Injection Auditor" },
+    "human_cab_gate": { step: 8, label: "8. CAB Governance Gate", icon: "👤", desc: "Cryptographic Governance Authorization" },
+    "deployment_and_postmortem": { step: 9, label: "9. Git PR Deployment", icon: "🚀", desc: "Live GitHub Push & PR Deployment" }
 };
+
+const NODE_ORDER = [
+    "sre_commander",
+    "telemetry_analyst",
+    "runbook_rag",
+    "diagnostic_fusion",
+    "patch_engineer",
+    "sandbox_qa",
+    "security_sast",
+    "human_cab_gate",
+    "deployment_and_postmortem"
+];
 
 document.addEventListener("DOMContentLoaded", () => {
     initMetrics();
@@ -47,7 +59,7 @@ async function initMetrics() {
     }
 }
 
-// 2. Setup Preset Buttons
+// 2. Setup 5 Preset Buttons
 function initPresets() {
     const presetButtons = document.querySelectorAll(".preset-btn");
     const textarea = document.getElementById("incident-input");
@@ -78,12 +90,17 @@ function initLogsClear() {
     });
 }
 
-// 4. Trigger 9-Node Multi-Agent Swarm
+// 4. Trigger 9-Node Multi-Agent Swarm with Live Progress Pipeline
 function initSwarmTrigger() {
     const triggerBtn = document.getElementById("btn-trigger-swarm");
     const textarea = document.getElementById("incident-input");
     const statusTag = document.getElementById("swarm-status-tag");
     const resultsSection = document.getElementById("results-section");
+    const progressContainer = document.getElementById("pipeline-progress-bar");
+    const progressFill = document.getElementById("progress-fill");
+    const statusLabel = document.getElementById("pipeline-status-label");
+    const stepCounter = document.getElementById("pipeline-step-counter");
+    const percentLabel = document.getElementById("pipeline-percent");
 
     triggerBtn.addEventListener("click", async () => {
         const prompt = textarea.value.trim();
@@ -91,39 +108,36 @@ function initSwarmTrigger() {
 
         // UI Loading State
         triggerBtn.disabled = true;
-        triggerBtn.querySelector(".btn-text").innerText = "⏳ Swarm Mobilizing (Executing 9 Nodes)...";
+        triggerBtn.querySelector(".btn-text").innerText = "⏳ Swarm Mobilized: Executing 9 Nodes in Parallel...";
         statusTag.innerText = "ACTIVE RUN";
         statusTag.className = "tag accent";
         resultsSection.style.display = "none";
+        progressContainer.classList.add("running");
 
         resetAllNodes();
-        appendLog("system", `Incident Alert Dispatched: "${prompt.substring(0, 80)}..."`);
+        updateProgress(0, "Mobilizing SRE Swarm: Initializing State Machine...");
+        appendLog("system", `🚨 Incident Alert Mobilized: "${prompt.substring(0, 80)}..."`);
 
         try {
-            // Animate node progression visually during network run
-            const nodeSequence = [
-                "sre_commander",
-                "telemetry_analyst",
-                "runbook_rag",
-                "diagnostic_fusion",
-                "patch_engineer",
-                "sandbox_qa",
-                "security_sast",
-                "human_cab_gate",
-                "deployment_and_postmortem"
-            ];
+            // Animate node progression visually during execution
+            let currentStepIdx = 0;
+            const stepInterval = 1200;
 
-            let stepTimer = 0;
-            nodeSequence.forEach((nodeId, idx) => {
-                setTimeout(() => {
-                    activateNode(nodeId);
+            const timer = setInterval(() => {
+                if (currentStepIdx < NODE_ORDER.length) {
+                    const nodeId = NODE_ORDER[currentStepIdx];
                     const info = NODE_DISPLAY_MAP[nodeId];
-                    if (info) {
-                        appendLog("step", `Executing [${info.label}]: ${info.desc}`);
-                    }
-                }, stepTimer);
-                stepTimer += 1300;
-            });
+                    
+                    activateNode(nodeId);
+                    activateStepPill(nodeId);
+                    
+                    const pct = Math.round(((currentStepIdx + 1) / NODE_ORDER.length) * 100);
+                    updateProgress(pct, `Executing Node ${currentStepIdx + 1}/9: ${info.label} (${info.desc})`);
+                    appendLog("step", `⚡ [Node ${currentStepIdx + 1}/9] ${info.label}: ${info.desc}`);
+
+                    currentStepIdx++;
+                }
+            }, stepInterval);
 
             // Call FastAPI backend
             const response = await fetch("/api/triage", {
@@ -133,10 +147,16 @@ function initSwarmTrigger() {
             });
 
             const data = await response.json();
+            clearInterval(timer);
 
             if (data.status === "SUCCESS") {
-                nodeSequence.forEach(id => completeNode(id));
+                // Complete all steps and nodes
+                NODE_ORDER.forEach(id => {
+                    completeNode(id);
+                    completeStepPill(id);
+                });
 
+                updateProgress(100, `✅ Incident Remediated: 9/9 Nodes Verified in ${data.elapsed_seconds}s`);
                 statusTag.innerText = "TRIAGE RESOLVED";
                 statusTag.className = "tag healthy";
 
@@ -153,13 +173,13 @@ function initSwarmTrigger() {
 
                 appendLog("success", `✅ Swarm completed 9-node execution in ${data.elapsed_seconds}s!`);
                 if (data.cab_token) {
-                    appendLog("info", `CAB Governance Token Issued: ${data.cab_token}`);
+                    appendLog("info", `👤 CAB Authorization Issued: ${data.cab_token}`);
                 }
-                appendLog("info", `GitHub PR Live: ${data.git_pr_url}`);
+                appendLog("info", `🐙 GitHub PR Deployed: ${data.git_pr_url}`);
 
                 // Render Results
                 resultsSection.style.display = "block";
-                document.getElementById("code-diff-viewer").innerText = data.patch_code || "// Migration generated and committed to GitHub.";
+                document.getElementById("code-diff-viewer").innerText = data.patch_code || "// Remediation patch generated and committed to GitHub.";
                 
                 // Render Markdown Post-Mortem
                 const postmortemViewer = document.getElementById("postmortem-viewer");
@@ -190,8 +210,18 @@ function initSwarmTrigger() {
         } finally {
             triggerBtn.disabled = false;
             triggerBtn.querySelector(".btn-text").innerText = "⚡ Mobilize 9-Node AI Swarm";
+            progressContainer.classList.remove("running");
         }
     });
+
+    function updateProgress(percent, label) {
+        progressFill.style.width = `${percent}%`;
+        percentLabel.innerText = `${percent}%`;
+        statusLabel.innerText = label;
+        
+        const activeCount = Math.round((percent / 100) * 9);
+        stepCounter.innerText = `${activeCount} / 9 Nodes Complete`;
+    }
 }
 
 // Visual Node State Helpers
@@ -199,13 +229,15 @@ function resetAllNodes() {
     document.querySelectorAll(".swarm-node").forEach(node => {
         node.classList.remove("active", "completed");
     });
+    document.querySelectorAll(".step-pill").forEach(pill => {
+        pill.classList.remove("active", "completed");
+    });
 }
 
 function activateNode(nodeId) {
     const node = document.getElementById(`node-${nodeId}`);
     if (node) {
         node.classList.add("active");
-        node.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
 }
 
@@ -214,6 +246,21 @@ function completeNode(nodeId) {
     if (node) {
         node.classList.remove("active");
         node.classList.add("completed");
+    }
+}
+
+function activateStepPill(nodeId) {
+    const pill = document.getElementById(`step-${nodeId}`);
+    if (pill) {
+        pill.classList.add("active");
+    }
+}
+
+function completeStepPill(nodeId) {
+    const pill = document.getElementById(`step-${nodeId}`);
+    if (pill) {
+        pill.classList.remove("active");
+        pill.classList.add("completed");
     }
 }
 

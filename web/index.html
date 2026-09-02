@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Autonomous AI SRE & DevSecOps Swarm | Enterprise Workbench</title>
-    <meta name="description" content="Institutional-grade autonomous AI SRE agent powered by LangChain, LangGraph, and LangSmith.">
+    <meta name="description" content="Institutional-grade autonomous AI SRE multi-agent workbench powered by LangChain, LangGraph, and LangSmith.">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,7 +30,7 @@
                 <span class="logo-icon">⚡</span>
                 <div class="brand-text">
                     <span class="brand-title">AGENTIC WORKBENCH</span>
-                    <span class="brand-badge">ENTERPRISE EDITION v2.4</span>
+                    <span class="brand-badge">ENTERPRISE SRE SWARM v3.0</span>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
             <div class="status-pill" id="pill-db">
                 <span class="pulse-dot active"></span>
                 <span class="pill-label">MongoDB:</span>
-                <span class="pill-val" id="val-db">localhost:27017 (UP)</span>
+                <span class="pill-val" id="val-db">localhost:27017 (ONLINE)</span>
             </div>
             <div class="status-pill" id="pill-git">
                 <span class="pulse-dot active"></span>
@@ -67,6 +67,64 @@
     <!-- Main Application Container -->
     <main class="app-container">
 
+        <!-- Live 9-Step Progress Pipeline Visualizer (Top Banner) -->
+        <section class="pipeline-progress-container" id="pipeline-progress-bar">
+            <div class="pipeline-header">
+                <div class="pipeline-status-left">
+                    <span class="pulse-ring" id="pipeline-pulse"></span>
+                    <span class="pipeline-status-text" id="pipeline-status-label">Swarm Ready: Standby for Incident Mobilization</span>
+                </div>
+                <div class="pipeline-status-right">
+                    <span class="pipeline-step-counter" id="pipeline-step-counter">0 / 9 Nodes Active</span>
+                    <span class="pipeline-percent" id="pipeline-percent">0%</span>
+                </div>
+            </div>
+            
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <!-- 9 Interactive Step Indicators -->
+            <div class="pipeline-steps-grid">
+                <div class="step-pill" id="step-sre_commander" data-step="1">
+                    <span class="step-num">1</span>
+                    <span class="step-name">Commander</span>
+                </div>
+                <div class="step-pill" id="step-telemetry_analyst" data-step="2">
+                    <span class="step-num">2</span>
+                    <span class="step-name">Telemetry</span>
+                </div>
+                <div class="step-pill" id="step-runbook_rag" data-step="3">
+                    <span class="step-num">3</span>
+                    <span class="step-name">Runbook RAG</span>
+                </div>
+                <div class="step-pill" id="step-diagnostic_fusion" data-step="4">
+                    <span class="step-num">4</span>
+                    <span class="step-name">Fusion</span>
+                </div>
+                <div class="step-pill" id="step-patch_engineer" data-step="5">
+                    <span class="step-num">5</span>
+                    <span class="step-name">Patch</span>
+                </div>
+                <div class="step-pill" id="step-sandbox_qa" data-step="6">
+                    <span class="step-num">6</span>
+                    <span class="step-name">Sandbox QA</span>
+                </div>
+                <div class="step-pill" id="step-security_sast" data-step="7">
+                    <span class="step-num">7</span>
+                    <span class="step-name">SAST</span>
+                </div>
+                <div class="step-pill" id="step-human_cab_gate" data-step="8">
+                    <span class="step-num">8</span>
+                    <span class="step-name">CAB Gate</span>
+                </div>
+                <div class="step-pill" id="step-deployment_and_postmortem" data-step="9">
+                    <span class="step-num">9</span>
+                    <span class="step-name">Git Release</span>
+                </div>
+            </div>
+        </section>
+
         <!-- Metrics Strip (Real Mathematical Benchmarks) -->
         <section class="metrics-strip">
             <div class="metric-card">
@@ -78,7 +136,7 @@
                     <span class="metric-value" id="metric-p99">-- ms</span>
                     <span class="metric-badge healthy" id="badge-p99">OPTIMAL</span>
                 </div>
-                <span class="metric-sub" id="metric-p99-sub">Live sampling from MongoDB</span>
+                <span class="metric-sub" id="metric-p99-sub">Live mathematical sampling (15 runs)</span>
             </div>
 
             <div class="metric-card">
@@ -90,7 +148,7 @@
                     <span class="metric-value" id="metric-error">0.0%</span>
                     <span class="metric-badge healthy" id="badge-error">SLO MET</span>
                 </div>
-                <span class="metric-sub">SLO target: &lt; 1.0%</span>
+                <span class="metric-sub">SLO threshold: &lt; 1.0%</span>
             </div>
 
             <div class="metric-card">
@@ -114,57 +172,77 @@
                     <span class="metric-value" id="metric-docs">10,000</span>
                     <span class="metric-badge neutral">SEEDED</span>
                 </div>
-                <span class="metric-sub">Active live dataset</span>
+                <span class="metric-sub">Active live dataset on localhost:27017</span>
             </div>
         </section>
 
         <!-- Workbench Grid (Console + Topology Visualizer + Log Stream) -->
         <div class="workbench-grid">
 
-            <!-- LEFT: Incident Command Console -->
+            <!-- LEFT: Incident Command Console & Rich Scenario Presets -->
             <section class="panel console-panel">
                 <div class="panel-header">
                     <h3>⚡ Incident Command Console</h3>
-                    <span class="tag">Active</span>
+                    <span class="tag">5 Scenarios Ready</span>
                 </div>
                 
                 <p class="panel-desc">Select an enterprise outage scenario or enter a custom telemetry alert:</p>
 
-                <!-- One-Click Preset Scenarios -->
+                <!-- Comprehensive 5 Production Presets -->
                 <div class="presets-list">
-                    <button class="preset-btn active" data-prompt="CRITICAL OUTAGE: checkout-api is throwing 504 gateway timeouts. p99 latency spiked to 5,120ms with 26.4% 5xx errors on MongoDB cart_items. Investigate, patch, verify tests, SAST audit, and raise PR.">
+                    <!-- Scenario 1: Index Missing -->
+                    <button class="preset-btn active" data-preset="1" data-prompt="CRITICAL OUTAGE: checkout-api is throwing 504 gateway timeouts. p99 latency spiked to 5,120ms with 26.4% 5xx errors on MongoDB cart_items. Investigate, patch, verify tests, SAST audit, and raise PR.">
                         <div class="preset-top">
-                            <span class="preset-tag p0">P0 SEV1</span>
-                            <span class="preset-title">Checkout 504 Timeout Outage</span>
+                            <span class="preset-tag p0">P0 OUTAGE</span>
+                            <span class="preset-title">1. Checkout 504 Timeout Outage</span>
                         </div>
-                        <span class="preset-sub">Unindexed Collection Scan on 10,000 docs</span>
+                        <span class="preset-sub">Unindexed COLLSCAN on 10,000 docs (Missing compound index)</span>
                     </button>
 
-                    <button class="preset-btn" data-prompt="P0 SEV1 ALERT: orders-db connection pool is 100% saturated. Row lock contention observed on cart_items table. Diagnose, write migration patch, and deploy hotfix.">
+                    <!-- Scenario 2: Connection Pool Exhaustion -->
+                    <button class="preset-btn" data-preset="2" data-prompt="P0 SEV1 ALERT: orders-db connection pool is 100% saturated. Row lock contention observed on cart_items table. Diagnose, write migration patch, and deploy hotfix.">
                         <div class="preset-top">
                             <span class="preset-tag p0">P0 SEV1</span>
-                            <span class="preset-title">Database Connection Pool Saturation</span>
+                            <span class="preset-title">2. DB Connection Pool Saturation</span>
                         </div>
-                        <span class="preset-sub">Connection starvation & thread lock wait</span>
+                        <span class="preset-sub">maxPoolSize starvation & thread lock wait exhaustion</span>
                     </button>
 
-                    <button class="preset-btn" data-prompt="SECURITY & STABILITY AUDIT: Check concurrency lock patterns on checkout services, rewrite unindexed queries with NOWAIT safeguards, and verify with SAST scanner.">
+                    <!-- Scenario 3: DevSecOps SAST & NoSQL Injection -->
+                    <button class="preset-btn" data-preset="3" data-prompt="SECURITY & STABILITY AUDIT: Check concurrency lock patterns on checkout services, rewrite unindexed queries with NOWAIT safeguards, and verify with SAST scanner.">
                         <div class="preset-top">
-                            <span class="preset-tag p1">AUDIT</span>
-                            <span class="preset-title">DevSecOps Concurrency & SAST Audit</span>
+                            <span class="preset-tag audit">DEVSECOPS</span>
+                            <span class="preset-title">3. NoSQL Injection & Concurrency Audit</span>
                         </div>
-                        <span class="preset-sub">OWASP Top 10 & CWE-89 validation</span>
+                        <span class="preset-sub">OWASP Top 10 compliance & optimistic lock hardening</span>
+                    </button>
+
+                    <!-- Scenario 4: Bulk Checkout Latency Spike -->
+                    <button class="preset-btn" data-preset="4" data-prompt="P1 DEGRADATION: checkout-api bulk order processing latency spiked to 3,840ms. CPU utilization at 88% due to unindexed status scans across 10,000 cart items. Remediate immediately.">
+                        <div class="preset-top">
+                            <span class="preset-tag p1">P1 SEV2</span>
+                            <span class="preset-title">4. Bulk Cart Processing Latency</span>
+                        </div>
+                        <span class="preset-sub">Unindexed status criteria causing CPU saturation</span>
+                    </button>
+
+                    <!-- Scenario 5: Database Deadlock Prevention -->
+                    <button class="preset-btn" data-preset="5" data-prompt="CRITICAL SEV1: Deadlock contention detected between concurrent cart checkout transactions and inventory reservation workers on orders-db. Enforce atomic updates with timeout guards.">
+                        <div class="preset-top">
+                            <span class="preset-tag p0">P0 DEADLOCK</span>
+                            <span class="preset-title">5. Concurrent Transaction Deadlock</span>
+                        </div>
+                        <span class="preset-sub">Mutual lock blocking between cart & inventory workers</span>
                     </button>
                 </div>
 
                 <!-- Custom Incident Input -->
                 <div class="input-container">
                     <label for="incident-input">Incident Alert Payload:</label>
-                    <textarea id="incident-input" rows="4" placeholder="Enter incident alert text..."></textarea>
+                    <textarea id="incident-input" rows="3" placeholder="Enter incident alert text..."></textarea>
                     
                     <button class="btn-execute" id="btn-trigger-swarm">
                         <span class="btn-text">⚡ Mobilize 9-Node AI Swarm</span>
-                        <span class="btn-loader" id="swarm-loader" style="display: none;"></span>
                     </button>
                 </div>
             </section>
@@ -177,7 +255,6 @@
                 </div>
 
                 <div class="topology-canvas-wrap">
-                    <!-- 9 Interactive Nodes with Animated Connectors -->
                     <div class="topology-nodes">
                         
                         <!-- Level 1: Commander -->
@@ -186,7 +263,7 @@
                                 <span class="node-icon">🎯</span>
                                 <div class="node-meta">
                                     <span class="node-name">1. SRE Commander</span>
-                                    <span class="node-role">Triage & Dispatch</span>
+                                    <span class="node-role">Supervisory Triage & Dispatch</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -198,7 +275,7 @@
                                 <span class="node-icon">📡</span>
                                 <div class="node-meta">
                                     <span class="node-name">2. Telemetry Analyst</span>
-                                    <span class="node-role">OpenTelemetry & Spans</span>
+                                    <span class="node-role">OpenTelemetry & Explain Plan</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -207,7 +284,7 @@
                                 <span class="node-icon">📚</span>
                                 <div class="node-meta">
                                     <span class="node-name">3. Runbook RAG</span>
-                                    <span class="node-role">SRE SOPs & KB</span>
+                                    <span class="node-role">SRE SOPs & Architecture KB</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -219,19 +296,19 @@
                                 <span class="node-icon">🧩</span>
                                 <div class="node-meta">
                                     <span class="node-name">4. Diagnostic Fusion</span>
-                                    <span class="node-role">Root Cause Engine</span>
+                                    <span class="node-role">Cross-Stream RCA Engine</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
                         </div>
 
-                        <!-- Level 4: Patch Engineer -->
+                        <!-- Level 4: Patch Engineer (With Self-Healing Reflection Loop) -->
                         <div class="node-row center">
                             <div class="swarm-node" id="node-patch_engineer">
                                 <span class="node-icon">💻</span>
                                 <div class="node-meta">
                                     <span class="node-name">5. Patch Engineer</span>
-                                    <span class="node-role">Migration & Hotfix</span>
+                                    <span class="node-role">Code Patch & Reflection Loop</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -243,7 +320,7 @@
                                 <span class="node-icon">🧪</span>
                                 <div class="node-meta">
                                     <span class="node-name">6. Sandboxed QA</span>
-                                    <span class="node-role">PyTest Suite (4/4)</span>
+                                    <span class="node-role">PyUnit Test Harness (4/4)</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -252,7 +329,7 @@
                                 <span class="node-icon">🛡️</span>
                                 <div class="node-meta">
                                     <span class="node-name">7. Security SAST</span>
-                                    <span class="node-role">DevSecOps Scan</span>
+                                    <span class="node-role">DevSecOps CWE-89 Audit</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -264,7 +341,7 @@
                                 <span class="node-icon">👤</span>
                                 <div class="node-meta">
                                     <span class="node-name">8. CAB Gate</span>
-                                    <span class="node-role">Governance Approval</span>
+                                    <span class="node-role">Cryptographic Governance</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -273,7 +350,7 @@
                                 <span class="node-icon">🚀</span>
                                 <div class="node-meta">
                                     <span class="node-name">9. Git PR Release</span>
-                                    <span class="node-role">GitHub Deployment</span>
+                                    <span class="node-role">Live GitHub Deployment</span>
                                 </div>
                                 <span class="node-status-dot"></span>
                             </div>
@@ -283,17 +360,17 @@
                 </div>
             </section>
 
-            <!-- RIGHT: Live Stream Terminal Logs -->
+            <!-- RIGHT: Live Stream Terminal Logs with Colored Badges -->
             <section class="panel terminal-panel">
                 <div class="panel-header">
-                    <h3>📺 Real-Time Agent Telemetry</h3>
+                    <h3>📺 Real-Time Swarm Telemetry</h3>
                     <button class="btn-clear-logs" id="btn-clear-logs">Clear Logs</button>
                 </div>
 
                 <div class="terminal-body" id="terminal-body">
                     <div class="log-entry system">
                         <span class="log-time">[00:00:00]</span>
-                        <span class="log-text">SRE Autonomous Workbench initialized. Ready for incident dispatch.</span>
+                        <span class="log-text">SRE Autonomous Workbench v3.0 initialized. Ready for incident dispatch.</span>
                     </div>
                     <div class="log-entry info">
                         <span class="log-time">[00:00:00]</span>
@@ -327,8 +404,8 @@
                 <!-- Migration Script & Code Diff -->
                 <div class="code-diff-card">
                     <div class="card-header">
-                        <h4>📝 Generated Migration Patch (`0042_mongo_index_migration.js`)</h4>
-                        <span class="tag">JavaScript / MongoDB</span>
+                        <h4>📝 AI-Generated Remediation Patch</h4>
+                        <span class="tag highlight" id="patch-language-tag">JavaScript / MongoDB</span>
                     </div>
                     <pre><code id="code-diff-viewer">// Migration code will appear here...</code></pre>
                 </div>
@@ -337,7 +414,7 @@
                 <div class="postmortem-card">
                     <div class="card-header">
                         <h4>📋 Executive Post-Mortem & Incident Summary</h4>
-                        <span class="tag highlight">VP of SRE Approved</span>
+                        <span class="tag highlight">Change Advisory Board Approved</span>
                     </div>
                     <div class="postmortem-content" id="postmortem-viewer">
                         <!-- Rendered Markdown will be inserted here -->
