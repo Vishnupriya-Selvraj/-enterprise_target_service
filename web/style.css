@@ -433,6 +433,7 @@ body {
 .preset-tag.p0 { background: var(--accent-coral); color: #ffffff; }
 .preset-tag.p1 { background: var(--accent-amber); color: #060913; }
 .preset-tag.audit { background: var(--accent-purple); color: #ffffff; }
+.preset-tag.cyclic { background: linear-gradient(135deg, #00f2fe 0%, #10b981 100%); color: #060913; font-weight: 800; }
 .preset-title { font-size: 0.82rem; font-weight: 700; color: #ffffff; }
 .preset-sub { font-size: 0.7rem; color: var(--text-muted); display: block; line-height: 1.3; }
 

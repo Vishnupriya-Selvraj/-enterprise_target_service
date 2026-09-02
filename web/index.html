@@ -179,60 +179,51 @@
         <!-- Workbench Grid (Console + Topology Visualizer + Log Stream) -->
         <div class="workbench-grid">
 
-            <!-- LEFT: Incident Command Console & Rich Scenario Presets -->
+            <!-- LEFT: Incident Command Console & 4 Architectural Flow Presets -->
             <section class="panel console-panel">
                 <div class="panel-header">
-                    <h3>⚡ Incident Command Console</h3>
-                    <span class="tag">5 Scenarios Ready</span>
+                    <h3>⚡ Architecture Demonstration Flows</h3>
+                    <span class="tag accent">4 Flow Patterns</span>
                 </div>
                 
-                <p class="panel-desc">Select an enterprise outage scenario or enter a custom telemetry alert:</p>
+                <p class="panel-desc">Select an architectural pattern to demonstrate live:</p>
 
-                <!-- Comprehensive 5 Production Presets -->
+                <!-- 4 Advanced Architectural Flow Presets -->
                 <div class="presets-list">
-                    <!-- Scenario 1: Index Missing -->
-                    <button class="preset-btn active" data-preset="1" data-prompt="CRITICAL OUTAGE: checkout-api is throwing 504 gateway timeouts. p99 latency spiked to 5,120ms with 26.4% 5xx errors on MongoDB cart_items. Investigate, patch, verify tests, SAST audit, and raise PR.">
+                    <!-- Flow 1: Hierarchical Multi-Agent Swarm -->
+                    <button class="preset-btn active" data-flow="hierarchical" data-prompt="CRITICAL OUTAGE: checkout-api is throwing 504 gateway timeouts. p99 latency spiked to 5,120ms with 26.4% 5xx errors on MongoDB cart_items. Investigate, patch, verify tests, SAST audit, and raise PR.">
                         <div class="preset-top">
-                            <span class="preset-tag p0">P0 OUTAGE</span>
-                            <span class="preset-title">1. Checkout 504 Timeout Outage</span>
+                            <span class="preset-tag p0">👑 HIERARCHICAL</span>
+                            <span class="preset-title">1. Multi-Agent Swarm Triage</span>
                         </div>
-                        <span class="preset-sub">Unindexed COLLSCAN on 10,000 docs (Missing compound index)</span>
+                        <span class="preset-sub">Commander supervises 8 specialist personas and synthesizes executive deliverables</span>
                     </button>
 
-                    <!-- Scenario 2: Connection Pool Exhaustion -->
-                    <button class="preset-btn" data-preset="2" data-prompt="P0 SEV1 ALERT: orders-db connection pool is 100% saturated. Row lock contention observed on cart_items table. Diagnose, write migration patch, and deploy hotfix.">
+                    <!-- Flow 2: Parallel Fan-Out / Fan-In -->
+                    <button class="preset-btn" data-flow="fanout" data-prompt="P0 SEV1 ALERT: orders-db connection pool is 100% saturated. Row lock contention observed on cart_items table. Diagnose, write migration patch, and deploy hotfix.">
                         <div class="preset-top">
-                            <span class="preset-tag p0">P0 SEV1</span>
-                            <span class="preset-title">2. DB Connection Pool Saturation</span>
+                            <span class="preset-tag p1">⚡ FAN-OUT / IN</span>
+                            <span class="preset-title">2. Parallel Telemetry & RAG Stream</span>
                         </div>
-                        <span class="preset-sub">maxPoolSize starvation & thread lock wait exhaustion</span>
+                        <span class="preset-sub">Simultaneous OpenTelemetry sampling and Vector Knowledge Base RAG convergence</span>
                     </button>
 
-                    <!-- Scenario 3: DevSecOps SAST & NoSQL Injection -->
-                    <button class="preset-btn" data-preset="3" data-prompt="SECURITY & STABILITY AUDIT: Check concurrency lock patterns on checkout services, rewrite unindexed queries with NOWAIT safeguards, and verify with SAST scanner.">
+                    <!-- Flow 3: Cyclic Reflection & Self-Healing Loop -->
+                    <button class="preset-btn" data-flow="cyclic" data-prompt="P0 SCHEMA EVOLUTION: checkout-api reflection test failure. Sandboxed QA detects lock contention on attempt 1. Trigger cyclic reflection loop to refine patch with background index options and timeout guards.">
                         <div class="preset-top">
-                            <span class="preset-tag audit">DEVSECOPS</span>
-                            <span class="preset-title">3. NoSQL Injection & Concurrency Audit</span>
+                            <span class="preset-tag cyclic">🔄 SELF-HEALING</span>
+                            <span class="preset-title">3. Cyclic Reflection Feedback Loop</span>
                         </div>
-                        <span class="preset-sub">OWASP Top 10 compliance & optimistic lock hardening</span>
+                        <span class="preset-sub">QA detects attempt 1 failure ➔ feeds error back to Patch Engineer ➔ self-heals on attempt 2!</span>
                     </button>
 
-                    <!-- Scenario 4: Bulk Checkout Latency Spike -->
-                    <button class="preset-btn" data-preset="4" data-prompt="P1 DEGRADATION: checkout-api bulk order processing latency spiked to 3,840ms. CPU utilization at 88% due to unindexed status scans across 10,000 cart items. Remediate immediately.">
+                    <!-- Flow 4: CAB Governance & Compliance Gate -->
+                    <button class="preset-btn" data-flow="governance" data-prompt="SECURITY & STABILITY AUDIT: Check concurrency lock patterns on checkout services, rewrite unindexed queries with NOWAIT safeguards, and verify with SAST scanner.">
                         <div class="preset-top">
-                            <span class="preset-tag p1">P1 SEV2</span>
-                            <span class="preset-title">4. Bulk Cart Processing Latency</span>
+                            <span class="preset-tag audit">🛡️ CAB GATE</span>
+                            <span class="preset-title">4. Governance & Cryptographic Auth</span>
                         </div>
-                        <span class="preset-sub">Unindexed status criteria causing CPU saturation</span>
-                    </button>
-
-                    <!-- Scenario 5: Database Deadlock Prevention -->
-                    <button class="preset-btn" data-preset="5" data-prompt="CRITICAL SEV1: Deadlock contention detected between concurrent cart checkout transactions and inventory reservation workers on orders-db. Enforce atomic updates with timeout guards.">
-                        <div class="preset-top">
-                            <span class="preset-tag p0">P0 DEADLOCK</span>
-                            <span class="preset-title">5. Concurrent Transaction Deadlock</span>
-                        </div>
-                        <span class="preset-sub">Mutual lock blocking between cart & inventory workers</span>
+                        <span class="preset-sub">OWASP Top 10 SAST validation & cryptographic CAB-AUTH token authorization</span>
                     </button>
                 </div>
 
