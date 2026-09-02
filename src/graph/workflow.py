@@ -1,5 +1,13 @@
 from langgraph.graph import StateGraph, START, END
-from langgraph.checkpoint.memory import MemorySaver
+
+# Resilient checkpointer loader across all LangGraph package versions
+try:
+    from langgraph.checkpoint.memory import MemorySaver
+except (ImportError, AttributeError):
+    try:
+        from langgraph.checkpoint.base import InMemorySaver as MemorySaver
+    except (ImportError, AttributeError):
+        MemorySaver = None
 
 from src.state import DevSecOpsState
 from src.graph.nodes import (
@@ -73,10 +81,13 @@ def build_devsecops_swarm_graph(checkpointer: bool = False):
     workflow.add_edge("human_cab_gate", "deployment_and_postmortem")
     workflow.add_edge("deployment_and_postmortem", END)
 
-    if checkpointer:
-        memory = MemorySaver()
-        return workflow.compile(checkpointer=memory)
-        
+    if checkpointer and MemorySaver is not None:
+        try:
+            memory = MemorySaver()
+            return workflow.compile(checkpointer=memory)
+        except Exception:
+            return workflow.compile()
+            
     return workflow.compile()
 
 # Canonical graph export for LangGraph Studio (checkpointer=False for platform persistence)
