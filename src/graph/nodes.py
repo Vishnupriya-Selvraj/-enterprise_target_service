@@ -18,12 +18,24 @@ from src.tools.registry import (
     create_github_pull_request
 )
 
-# Initialize primary Groq LLM instance
-llm = ChatGroq(
-    model=settings.get_resolved_model_name(),
+# Initialize primary Groq LLM instance with multi-model failover
+primary_llm = ChatGroq(
+    model="openai/gpt-oss-120b",
     api_key=settings.groq_api_key,
     temperature=0.1
 )
+fallback_llm_1 = ChatGroq(
+    model="openai/gpt-oss-20b",
+    api_key=settings.groq_api_key,
+    temperature=0.1
+)
+fallback_llm_2 = ChatGroq(
+    model="qwen/qwen3.8-27b",
+    api_key=settings.groq_api_key,
+    temperature=0.1
+)
+
+llm = primary_llm.with_fallbacks([fallback_llm_1, fallback_llm_2])
 
 def get_current_date_str() -> str:
     """Returns today's date dynamically to ensure temporal accuracy."""
