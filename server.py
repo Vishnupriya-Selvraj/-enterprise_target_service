@@ -5,7 +5,7 @@ import json
 import asyncio
 from typing import Dict, Any, Optional
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
+from fastapi.responses import HTMLResponse, JSONResponse, FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -15,7 +15,7 @@ from src.config import settings
 from src.graph.workflow import build_devsecops_swarm_graph
 from enterprise_target_service.app.main import app_instance
 
-app = FastAPI(title="Autonomous AI SRE & DevSecOps Workbench", version="2.0.0")
+app = FastAPI(title="Autonomous AI SRE & DevSecOps Workbench", version="3.0.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -63,7 +63,7 @@ async def get_live_metrics():
 
 @app.post("/api/triage")
 async def trigger_incident_triage(req: IncidentRequest):
-    """Executes the 9-node autonomous DevSecOps swarm and returns step-by-step execution logs."""
+    """Executes the industry-grade 9-node LangGraph swarm with cyclic reflection and returns complete payload."""
     thread_id = f"sre-web-{int(time.time() * 1000)}"
     config = {"configurable": {"thread_id": thread_id}}
     
@@ -71,6 +71,9 @@ async def trigger_incident_triage(req: IncidentRequest):
     final_report = ""
     patch_code = ""
     pr_url = ""
+    cab_token = ""
+    tool_audit = []
+    agent_thoughts = []
     start_time = time.perf_counter()
 
     try:
@@ -96,8 +99,17 @@ async def trigger_incident_triage(req: IncidentRequest):
                 }
                 execution_steps.append(step_data)
 
+                if "agent_thoughts" in node_output:
+                    agent_thoughts.extend(node_output["agent_thoughts"])
+
+                if "tool_audit_trail" in node_output:
+                    tool_audit.extend(node_output["tool_audit_trail"])
+
                 if node_name == "patch_engineer":
                     patch_code = node_output.get("patch_code", "")
+
+                if node_name == "human_cab_gate":
+                    cab_token = node_output.get("cab_approval_token", "")
 
                 if node_name == "deployment_and_postmortem":
                     final_report = node_output.get("post_mortem_report", "")
@@ -111,6 +123,9 @@ async def trigger_incident_triage(req: IncidentRequest):
             "elapsed_seconds": round(elapsed_seconds, 2),
             "steps_count": len(execution_steps),
             "steps": execution_steps,
+            "agent_thoughts": agent_thoughts,
+            "tool_audit_trail": tool_audit,
+            "cab_token": cab_token,
             "patch_code": patch_code,
             "git_pr_url": pr_url or "https://github.com/Vishnupriya-Selvraj/-enterprise_target_service/pull/1",
             "post_mortem_report": final_report,

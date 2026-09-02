@@ -450,6 +450,7 @@ body {
 .log-entry.system .log-text { color: var(--accent-blue); }
 .log-entry.info .log-text { color: var(--text-secondary); }
 .log-entry.step .log-text { color: var(--accent-cyan); font-weight: 600; }
+.log-entry.tool .log-text { color: #c084fc; font-weight: 500; }
 .log-entry.success .log-text { color: var(--accent-emerald); }
 .log-entry.error .log-text { color: var(--accent-coral); }
 

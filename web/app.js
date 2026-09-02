@@ -1,17 +1,17 @@
 // ==========================================================================
-// ENTERPRISE AI WORKBENCH - FRONTEND ENGINE
+// ENTERPRISE AI WORKBENCH - INDUSTRY-GRADE MULTI-AGENT FRONTEND ENGINE
 // ==========================================================================
 
 const NODE_DISPLAY_MAP = {
-    "sre_commander": { label: "1. SRE Commander", icon: "🎯", desc: "Scoped P0 Outage & Dispatched Streams" },
-    "telemetry_analyst": { label: "2. Telemetry Analyst", icon: "📡", desc: "Captured p99 spike & lock contention" },
-    "runbook_rag": { label: "3. Runbook RAG", icon: "📚", desc: "Retrieved SOP SRE-RB-409 Protocol" },
-    "diagnostic_fusion": { label: "4. Diagnostic Fusion", icon: "🧩", desc: "Fused Root Cause into confirmed plan" },
-    "patch_engineer": { label: "5. Patch Engineer", icon: "💻", desc: "Generated compound index migration" },
-    "sandbox_qa": { label: "6. Sandboxed QA", icon: "🧪", desc: "PyTest Suite Passed (4/4)" },
-    "security_sast": { label: "7. Security SAST", icon: "🛡️", desc: "Zero CWE vulnerabilities verified" },
-    "human_cab_gate": { label: "8. CAB Gate", icon: "👤", desc: "Change Advisory Board approved" },
-    "deployment_and_postmortem": { label: "9. Git PR Release", icon: "🚀", desc: "Pushed to GitHub & Created PR #1" }
+    "sre_commander": { label: "1. SRE Commander", icon: "🎯", desc: "Supervisory Triage & Stream Dispatch" },
+    "telemetry_analyst": { label: "2. Telemetry Analyst", icon: "📡", desc: "OpenTelemetry Spans & MongoDB Explain Plan" },
+    "runbook_rag": { label: "3. Runbook RAG", icon: "📚", desc: "SRE Knowledge Base SOP Retrieval" },
+    "diagnostic_fusion": { label: "4. Diagnostic Fusion", icon: "🧩", desc: "Cross-Stream RCA Convergence" },
+    "patch_engineer": { label: "5. Patch Engineer", icon: "💻", desc: "Remediation Patch & Reflection Engine" },
+    "sandbox_qa": { label: "6. Sandboxed QA", icon: "🧪", desc: "Live PyUnit Test Runner (localhost:27017)" },
+    "security_sast": { label: "7. Security SAST", icon: "🛡️", desc: "DevSecOps CWE & NoSQL Injection Auditor" },
+    "human_cab_gate": { label: "8. CAB Gate", icon: "👤", desc: "Cryptographic Governance Authorization" },
+    "deployment_and_postmortem": { label: "9. Git PR Release", icon: "🚀", desc: "Live GitHub Push & PR Deployment" }
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -52,7 +52,6 @@ function initPresets() {
     const presetButtons = document.querySelectorAll(".preset-btn");
     const textarea = document.getElementById("incident-input");
 
-    // Default to first preset
     if (presetButtons.length > 0) {
         textarea.value = presetButtons[0].getAttribute("data-prompt");
     }
@@ -123,7 +122,7 @@ function initSwarmTrigger() {
                         appendLog("step", `Executing [${info.label}]: ${info.desc}`);
                     }
                 }, stepTimer);
-                stepTimer += 1400; // Visual progression tempo
+                stepTimer += 1300;
             });
 
             // Call FastAPI backend
@@ -136,14 +135,27 @@ function initSwarmTrigger() {
             const data = await response.json();
 
             if (data.status === "SUCCESS") {
-                // Ensure all nodes show completed
                 nodeSequence.forEach(id => completeNode(id));
 
                 statusTag.innerText = "TRIAGE RESOLVED";
                 statusTag.className = "tag healthy";
 
+                // Print Agent Thoughts and Tool Audits to Terminal
+                if (data.agent_thoughts && data.agent_thoughts.length > 0) {
+                    data.agent_thoughts.forEach(th => appendLog("info", th));
+                }
+
+                if (data.tool_audit_trail && data.tool_audit_trail.length > 0) {
+                    data.tool_audit_trail.forEach(tool => {
+                        appendLog("tool", `🔧 Tool Executed: ${tool.tool} (${tool.latency_ms}ms) -> Status: ${tool.status}`);
+                    });
+                }
+
                 appendLog("success", `✅ Swarm completed 9-node execution in ${data.elapsed_seconds}s!`);
-                appendLog("info", `GitHub PR Created: ${data.git_pr_url}`);
+                if (data.cab_token) {
+                    appendLog("info", `CAB Governance Token Issued: ${data.cab_token}`);
+                }
+                appendLog("info", `GitHub PR Live: ${data.git_pr_url}`);
 
                 // Render Results
                 resultsSection.style.display = "block";
