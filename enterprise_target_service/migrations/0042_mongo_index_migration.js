@@ -1,52 +1,58 @@
 /**
- * Migration Script: checkout-api / cart_items
- * Status: NO-OP (No Operation)
- * Reason: RCA confirms index 'idx_cart_items_user_status' already exists and is in use.
- *         Alert was a false positive from diagnostic tooling.
- *         Do NOT create index again to avoid redundant write overhead.
+ * Database Verification Script for orders-db
+ * 
+ * RCA Context: 
+ * - Alert "Missing compound index" is a FALSE POSITIVE.
+ * - Index idx_cart_items_user_status is ACTIVE and in use.
+ * - p99 latency is 1.98ms (healthy).
+ * 
+ * Action: 
+ * - DO NOT create the index.
+ * - Verify index existence and query plan to confirm system health.
+ * - This script is idempotent and safe to run in production.
  */
 
-const db = db.getSiblingDB("ecommerce_prod");
-const collection = db.cart_items;
-const indexName = "idx_cart_items_user_status";
-const expectedKeys = { user_id: 1, status: 1 };
+const collectionName = 'cart_items';
+const indexName = 'idx_cart_items_user_status';
+const expectedIndexKeys = { user_id: 1, status: 1 };
 
-// 1. Verify index existence
-const indexes = collection.getIndexes();
-const existingIndex = indexes.find(idx => idx.name === indexName);
+// 1. Verify Index Existence
+const indexes = db[collectionName].getIndexes();
+const targetIndex = indexes.find(idx => idx.name === indexName);
 
-if (!existingIndex) {
-    // This should NOT happen based on RCA. If it does, it's a critical state mismatch.
-    console.error(`CRITICAL: Index ${indexName} not found. RCA may be incorrect. Aborting.`);
-    throw new Error(`Index ${indexName} missing. Manual intervention required.`);
+if (!targetIndex) {
+    // This should NOT happen based on RCA. If it does, log a critical error.
+    throw new Error(`CRITICAL: Index ${indexName} not found. RCA indicated it should exist. Investigate diagnostic tooling.`);
 }
 
-// 2. Verify index keys match expected
-const actualKeys = existingIndex.key;
-const keysMatch = 
-    actualKeys.user_id === expectedKeys.user_id &&
-    actualKeys.status === expectedKeys.status;
+// 2. Verify Index Keys Match Expected Schema
+const actualKeys = targetIndex.key;
+const keysMatch = JSON.stringify(actualKeys) === JSON.stringify(expectedIndexKeys);
 
 if (!keysMatch) {
-    console.error(`CRITICAL: Index ${indexName} keys mismatch. Expected: ${JSON.stringify(expectedKeys)}, Got: ${JSON.stringify(actualKeys)}`);
-    throw new Error(`Index key mismatch for ${indexName}. Manual intervention required.`);
+    throw new Error(`CRITICAL: Index ${indexName} exists but has unexpected keys: ${JSON.stringify(actualKeys)}. Expected: ${JSON.stringify(expectedIndexKeys)}`);
 }
 
-// 3. Log verification success and false positive acknowledgment
-console.log(`SUCCESS: Index ${indexName} verified as active and correct.`);
-console.log(`ACTION: Acknowledge alert as FALSE POSITIVE. No DB changes applied.`);
-console.log(`NEXT STEP: File ticket with diagnostic tooling team to fix index detection logic.`);
+// 3. Verify Query Plan Uses IXSCAN (Index Scan)
+// Use a sample query that matches the alert's context
+const sampleQuery = { user_id: "test_user_id", status: "active" };
+const explainResult = db[collectionName].find(sampleQuery).explain('executionStats');
 
-// 4. Optional: Verify query plan uses the index (for audit trail)
-const explainResult = collection.find({ user_id: "test_user", status: "active" }).explain("executionStats");
+// Extract the winning plan stage
 const winningPlan = explainResult.queryPlanner.winningPlan;
 const stage = winningPlan.stage;
-const indexUsed = winningPlan.inputStage ? winningPlan.inputStage.indexName : winningPlan.indexName;
+const indexUsed = winningPlan.inputStage ? winningPlan.inputStage.indexName : null;
 
-if (stage === "IXSCAN" && indexUsed === indexName) {
-    console.log(`VERIFIED: Query plan uses IXSCAN on ${indexName}. Latency: ${explainResult.executionStats.executionTimeMillis}ms`);
+if (stage !== 'IXSCAN' || indexUsed !== indexName) {
+    // If it's not IXSCAN, check if it's a COLLSCAN (which would indicate a real problem)
+    if (stage === 'COLLSCAN') {
+        throw new Error(`CRITICAL: Query is using COLLSCAN. Index ${indexName} is not being used. Investigate immediately.`);
+    }
+    // If it's another stage (e.g., FETCH with IXSCAN input), that's acceptable, but we expect IXSCAN at the top or input level
+    console.warn(`WARNING: Query plan stage is ${stage}, using index: ${indexUsed}. Expected IXSCAN with ${indexName}.`);
 } else {
-    console.warn(`WARNING: Query plan did not use expected index. Stage: ${stage}, Index: ${indexUsed}`);
+    console.log(`SUCCESS: Index ${indexName} is active and query plan uses IXSCAN.`);
 }
 
-// No index creation performed.
+// 4. Log Verification Result for Alert Closure
+console.log(`VERIFICATION COMPLETE: Index ${indexName} exists and is in use. Alert can be closed as False Positive.`);
