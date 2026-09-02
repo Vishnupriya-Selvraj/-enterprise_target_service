@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous AI SRE & DevSecOps Swarm | Enterprise Workbench</title>
+    <meta name="description" content="Institutional-grade autonomous AI SRE agent powered by LangChain, LangGraph, and LangSmith.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Markdown Parser for Executive Reports -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+    <!-- Ambient Background Glows -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="brand-logo">
+                <span class="logo-icon">⚡</span>
+                <div class="brand-text">
+                    <span class="brand-title">AGENTIC WORKBENCH</span>
+                    <span class="brand-badge">ENTERPRISE EDITION v2.4</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Infrastructure Status Badges -->
+        <div class="header-center">
+            <div class="status-pill" id="pill-llm">
+                <span class="pulse-dot active"></span>
+                <span class="pill-label">LLM:</span>
+                <span class="pill-val" id="val-llm">GROQ (qwen/qwen3.8-27b)</span>
+            </div>
+            <div class="status-pill" id="pill-db">
+                <span class="pulse-dot active"></span>
+                <span class="pill-label">MongoDB:</span>
+                <span class="pill-val" id="val-db">localhost:27017 (UP)</span>
+            </div>
+            <div class="status-pill" id="pill-git">
+                <span class="pulse-dot active"></span>
+                <span class="pill-label">GitHub:</span>
+                <span class="pill-val">Connected</span>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <a href="https://smith.langchain.com" target="_blank" class="nav-btn btn-ghost" id="btn-langsmith">
+                <span class="icon">📊</span> LangSmith Traces
+            </a>
+            <a href="https://github.com/Vishnupriya-Selvraj/-enterprise_target_service" target="_blank" class="nav-btn btn-primary" id="btn-github-repo">
+                <span class="icon">🐙</span> GitHub Repo
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Application Container -->
+    <main class="app-container">
+
+        <!-- Metrics Strip (Real Mathematical Benchmarks) -->
+        <section class="metrics-strip">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">p99 Latency</span>
+                    <span class="metric-icon">⏱️</span>
+                </div>
+                <div class="metric-value-row">
+                    <span class="metric-value" id="metric-p99">-- ms</span>
+                    <span class="metric-badge healthy" id="badge-p99">OPTIMAL</span>
+                </div>
+                <span class="metric-sub" id="metric-p99-sub">Live sampling from MongoDB</span>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">5xx Error Rate</span>
+                    <span class="metric-icon">🚨</span>
+                </div>
+                <div class="metric-value-row">
+                    <span class="metric-value" id="metric-error">0.0%</span>
+                    <span class="metric-badge healthy" id="badge-error">SLO MET</span>
+                </div>
+                <span class="metric-sub">SLO target: &lt; 1.0%</span>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">MongoDB Stage</span>
+                    <span class="metric-icon">🍃</span>
+                </div>
+                <div class="metric-value-row">
+                    <span class="metric-value small" id="metric-stage">IXSCAN</span>
+                    <span class="metric-badge healthy" id="badge-stage">INDEXED</span>
+                </div>
+                <span class="metric-sub">Target: ecommerce_prod.cart_items</span>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-title">Collection Documents</span>
+                    <span class="metric-icon">📦</span>
+                </div>
+                <div class="metric-value-row">
+                    <span class="metric-value" id="metric-docs">10,000</span>
+                    <span class="metric-badge neutral">SEEDED</span>
+                </div>
+                <span class="metric-sub">Active live dataset</span>
+            </div>
+        </section>
+
+        <!-- Workbench Grid (Console + Topology Visualizer + Log Stream) -->
+        <div class="workbench-grid">
+
+            <!-- LEFT: Incident Command Console -->
+            <section class="panel console-panel">
+                <div class="panel-header">
+                    <h3>⚡ Incident Command Console</h3>
+                    <span class="tag">Active</span>
+                </div>
+                
+                <p class="panel-desc">Select an enterprise outage scenario or enter a custom telemetry alert:</p>
+
+                <!-- One-Click Preset Scenarios -->
+                <div class="presets-list">
+                    <button class="preset-btn active" data-prompt="CRITICAL OUTAGE: checkout-api is throwing 504 gateway timeouts. p99 latency spiked to 5,120ms with 26.4% 5xx errors on MongoDB cart_items. Investigate, patch, verify tests, SAST audit, and raise PR.">
+                        <div class="preset-top">
+                            <span class="preset-tag p0">P0 SEV1</span>
+                            <span class="preset-title">Checkout 504 Timeout Outage</span>
+                        </div>
+                        <span class="preset-sub">Unindexed Collection Scan on 10,000 docs</span>
+                    </button>
+
+                    <button class="preset-btn" data-prompt="P0 SEV1 ALERT: orders-db connection pool is 100% saturated. Row lock contention observed on cart_items table. Diagnose, write migration patch, and deploy hotfix.">
+                        <div class="preset-top">
+                            <span class="preset-tag p0">P0 SEV1</span>
+                            <span class="preset-title">Database Connection Pool Saturation</span>
+                        </div>
+                        <span class="preset-sub">Connection starvation & thread lock wait</span>
+                    </button>
+
+                    <button class="preset-btn" data-prompt="SECURITY & STABILITY AUDIT: Check concurrency lock patterns on checkout services, rewrite unindexed queries with NOWAIT safeguards, and verify with SAST scanner.">
+                        <div class="preset-top">
+                            <span class="preset-tag p1">AUDIT</span>
+                            <span class="preset-title">DevSecOps Concurrency & SAST Audit</span>
+                        </div>
+                        <span class="preset-sub">OWASP Top 10 & CWE-89 validation</span>
+                    </button>
+                </div>
+
+                <!-- Custom Incident Input -->
+                <div class="input-container">
+                    <label for="incident-input">Incident Alert Payload:</label>
+                    <textarea id="incident-input" rows="4" placeholder="Enter incident alert text..."></textarea>
+                    
+                    <button class="btn-execute" id="btn-trigger-swarm">
+                        <span class="btn-text">⚡ Mobilize 9-Node AI Swarm</span>
+                        <span class="btn-loader" id="swarm-loader" style="display: none;"></span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- CENTER: 9-Node Multi-Agent Topology Visualizer -->
+            <section class="panel topology-panel">
+                <div class="panel-header">
+                    <h3>🕸️ Multi-Agent Swarm Topology</h3>
+                    <span class="tag accent" id="swarm-status-tag">STANDBY</span>
+                </div>
+
+                <div class="topology-canvas-wrap">
+                    <!-- 9 Interactive Nodes with Animated Connectors -->
+                    <div class="topology-nodes">
+                        
+                        <!-- Level 1: Commander -->
+                        <div class="node-row center">
+                            <div class="swarm-node" id="node-sre_commander">
+                                <span class="node-icon">🎯</span>
+                                <div class="node-meta">
+                                    <span class="node-name">1. SRE Commander</span>
+                                    <span class="node-role">Triage & Dispatch</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+                        </div>
+
+                        <!-- Level 2: Parallel Streams (Fan-Out) -->
+                        <div class="node-row split">
+                            <div class="swarm-node" id="node-telemetry_analyst">
+                                <span class="node-icon">📡</span>
+                                <div class="node-meta">
+                                    <span class="node-name">2. Telemetry Analyst</span>
+                                    <span class="node-role">OpenTelemetry & Spans</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+
+                            <div class="swarm-node" id="node-runbook_rag">
+                                <span class="node-icon">📚</span>
+                                <div class="node-meta">
+                                    <span class="node-name">3. Runbook RAG</span>
+                                    <span class="node-role">SRE SOPs & KB</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+                        </div>
+
+                        <!-- Level 3: Diagnostic Fusion (Fan-In) -->
+                        <div class="node-row center">
+                            <div class="swarm-node" id="node-diagnostic_fusion">
+                                <span class="node-icon">🧩</span>
+                                <div class="node-meta">
+                                    <span class="node-name">4. Diagnostic Fusion</span>
+                                    <span class="node-role">Root Cause Engine</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+                        </div>
+
+                        <!-- Level 4: Patch Engineer -->
+                        <div class="node-row center">
+                            <div class="swarm-node" id="node-patch_engineer">
+                                <span class="node-icon">💻</span>
+                                <div class="node-meta">
+                                    <span class="node-name">5. Patch Engineer</span>
+                                    <span class="node-role">Migration & Hotfix</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+                        </div>
+
+                        <!-- Level 5: Sandboxed QA & SAST Security (Self-Healing Loop) -->
+                        <div class="node-row split">
+                            <div class="swarm-node" id="node-sandbox_qa">
+                                <span class="node-icon">🧪</span>
+                                <div class="node-meta">
+                                    <span class="node-name">6. Sandboxed QA</span>
+                                    <span class="node-role">PyTest Suite (4/4)</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+
+                            <div class="swarm-node" id="node-security_sast">
+                                <span class="node-icon">🛡️</span>
+                                <div class="node-meta">
+                                    <span class="node-name">7. Security SAST</span>
+                                    <span class="node-role">DevSecOps Scan</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+                        </div>
+
+                        <!-- Level 6: Governance & Release -->
+                        <div class="node-row split">
+                            <div class="swarm-node" id="node-human_cab_gate">
+                                <span class="node-icon">👤</span>
+                                <div class="node-meta">
+                                    <span class="node-name">8. CAB Gate</span>
+                                    <span class="node-role">Governance Approval</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+
+                            <div class="swarm-node" id="node-deployment_and_postmortem">
+                                <span class="node-icon">🚀</span>
+                                <div class="node-meta">
+                                    <span class="node-name">9. Git PR Release</span>
+                                    <span class="node-role">GitHub Deployment</span>
+                                </div>
+                                <span class="node-status-dot"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT: Live Stream Terminal Logs -->
+            <section class="panel terminal-panel">
+                <div class="panel-header">
+                    <h3>📺 Real-Time Agent Telemetry</h3>
+                    <button class="btn-clear-logs" id="btn-clear-logs">Clear Logs</button>
+                </div>
+
+                <div class="terminal-body" id="terminal-body">
+                    <div class="log-entry system">
+                        <span class="log-time">[00:00:00]</span>
+                        <span class="log-text">SRE Autonomous Workbench initialized. Ready for incident dispatch.</span>
+                    </div>
+                    <div class="log-entry info">
+                        <span class="log-time">[00:00:00]</span>
+                        <span class="log-text">Target: MongoDB (localhost:27017) | Repository: Vishnupriya-Selvraj/-enterprise_target_service</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- BOTTOM PANEL: Generated Migration Diff & Executive Post-Mortem -->
+        <section class="results-container" id="results-section" style="display: none;">
+            
+            <div class="results-header">
+                <div class="results-title-group">
+                    <h2>🎯 Incident Resolution & Verification Artifacts</h2>
+                    <span class="badge success" id="resolution-status-badge">100% RESOLVED</span>
+                </div>
+                <div class="pr-action-group">
+                    <a href="https://github.com/Vishnupriya-Selvraj/-enterprise_target_service/pull/1" target="_blank" class="btn-github-pr" id="pr-action-link">
+                        <span>🐙 View Live Pull Request on GitHub #1</span>
+                        <span class="arrow">➔</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="results-grid">
+                <!-- Migration Script & Code Diff -->
+                <div class="code-diff-card">
+                    <div class="card-header">
+                        <h4>📝 Generated Migration Patch (`0042_mongo_index_migration.js`)</h4>
+                        <span class="tag">JavaScript / MongoDB</span>
+                    </div>
+                    <pre><code id="code-diff-viewer">// Migration code will appear here...</code></pre>
+                </div>
+
+                <!-- Executive Post-Mortem Report -->
+                <div class="postmortem-card">
+                    <div class="card-header">
+                        <h4>📋 Executive Post-Mortem & Incident Summary</h4>
+                        <span class="tag highlight">VP of SRE Approved</span>
+                    </div>
+                    <div class="postmortem-content" id="postmortem-viewer">
+                        <!-- Rendered Markdown will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Custom Frontend Logic -->
+    <script src="/static/app.js"></script>
+</body>
+</html>
