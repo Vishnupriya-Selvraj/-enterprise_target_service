@@ -79,7 +79,7 @@ Mission:
         "messages": [AIMessage(content=f"🎯 **SRE Incident Commander**:\n{response.content}")],
         "service_target": service_target,
         "severity_level": severity,
-        "active_agent": "sre_commander",
+        "active_agents": ["sre_commander"],
         "agent_thoughts": [thought],
         "qa_attempt_count": 0,
         "compiler_feedback": [],
@@ -123,7 +123,7 @@ def telemetry_analyst_node(state: DevSecOpsState) -> dict:
             "raw_telemetry": tel_data,
             "raw_locks": lock_data
         },
-        "active_agent": "telemetry_analyst",
+        "active_agents": ["telemetry_analyst"],
         "agent_thoughts": [thought],
         "tool_audit_trail": audit_entries
     }
@@ -156,7 +156,7 @@ def runbook_rag_node(state: DevSecOpsState) -> dict:
             "summary": synth.content,
             "raw_runbook": rb_data
         },
-        "active_agent": "runbook_rag",
+        "active_agents": ["runbook_rag"],
         "agent_thoughts": [thought],
         "tool_audit_trail": audit_entry
     }
@@ -187,7 +187,7 @@ Synthesize a comprehensive Root Cause Analysis (RCA) and declare the exact engin
     return {
         "messages": [AIMessage(content=f"🧩 **Diagnostic Fusion Engine**:\n{response.content}")],
         "root_cause_analysis": response.content,
-        "active_agent": "diagnostic_fusion",
+        "active_agents": ["diagnostic_fusion"],
         "agent_thoughts": [thought]
     }
 
@@ -233,7 +233,7 @@ Provide the production-grade code block enclosed in ```javascript or ```json."""
         "patch_code": parsed["patch"],
         "test_code": parsed["test"],
         "qa_attempt_count": attempt,
-        "active_agent": "patch_engineer",
+        "active_agents": ["patch_engineer"],
         "agent_thoughts": [thought]
     }
 
@@ -265,7 +265,7 @@ def sandbox_qa_node(state: DevSecOpsState) -> dict:
         "messages": [AIMessage(content=f"🧪 **Sandboxed QA Runner**:\n{qa_result}")],
         "qa_passed": is_success,
         "qa_output": qa_result,
-        "active_agent": "sandbox_qa",
+        "active_agents": ["sandbox_qa"],
         "agent_thoughts": [thought],
         "tool_audit_trail": audit_entry,
         "compiler_feedback": compiler_msg
@@ -295,7 +295,7 @@ def security_sast_node(state: DevSecOpsState) -> dict:
         "security_approved": is_safe,
         "security_audit_report": sast_result,
         "cwe_vulnerabilities_found": 0 if is_safe else 1,
-        "active_agent": "security_sast",
+        "active_agents": ["security_sast"],
         "agent_thoughts": [thought],
         "tool_audit_trail": audit_entry
     }
@@ -323,7 +323,7 @@ def human_cab_gate_node(state: DevSecOpsState) -> dict:
         "messages": [AIMessage(content=decision)],
         "cab_approval_token": token,
         "cab_risk_score": 0.05,
-        "active_agent": "human_cab_gate",
+        "active_agents": ["human_cab_gate"],
         "agent_thoughts": [thought]
     }
 
@@ -358,7 +358,6 @@ def deployment_and_postmortem_node(state: DevSecOpsState) -> dict:
     })
     t_git = round((time.perf_counter() - t0) * 1000, 2)
 
-    # Extract direct PR link
     pr_match = re.search(r'Direct Pull Request Link:\s*(https://[^\s]+)', pr_result)
     pr_url = pr_match.group(1) if pr_match else "https://github.com/Vishnupriya-Selvraj/-enterprise_target_service/pull/1"
 
@@ -400,7 +399,7 @@ def deployment_and_postmortem_node(state: DevSecOpsState) -> dict:
         "post_mortem_report": post_mortem,
         "git_branch": branch,
         "git_pr_url": pr_url,
-        "active_agent": "deployment_and_postmortem",
+        "active_agents": ["deployment_and_postmortem"],
         "agent_thoughts": [thought],
         "tool_audit_trail": audit_entry
     }

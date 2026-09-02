@@ -23,12 +23,12 @@ class DevSecOpsState(TypedDict):
     """
     # Core Message & Incident Channel
     messages: Annotated[Sequence[BaseMessage], add_messages]
-    incident_description: str
-    service_target: str
-    severity_level: str
+    incident_description: Optional[str]
+    service_target: Optional[str]
+    severity_level: Optional[str]
     
-    # Dynamic Agent Reasoning & Tool Audit Logs
-    active_agent: Optional[str]
+    # Dynamic Agent Reasoning & Tool Audit Logs (Using native operator.add reducers)
+    active_agents: Annotated[List[str], operator.add]
     agent_thoughts: Annotated[List[str], operator.add]
     tool_audit_trail: Annotated[List[Dict[str, Any]], operator.add]
     
@@ -42,17 +42,17 @@ class DevSecOpsState(TypedDict):
     test_code: Optional[str]
     qa_passed: Optional[bool]
     qa_output: Optional[str]
-    qa_attempt_count: int
+    qa_attempt_count: Optional[int]
     compiler_feedback: Annotated[List[str], operator.add]
     
     # Security SAST & DevSecOps Compliance
     security_approved: Optional[bool]
     security_audit_report: Optional[str]
-    cwe_vulnerabilities_found: int
+    cwe_vulnerabilities_found: Optional[int]
     
     # Governance, Deployment & Executive Artifacts
     cab_approval_token: Optional[str]
-    cab_risk_score: float
+    cab_risk_score: Optional[float]
     git_branch: Optional[str]
     git_pr_url: Optional[str]
     post_mortem_report: Optional[str]
